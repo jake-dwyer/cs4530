@@ -1,0 +1,93 @@
+Lecture 3 - Test Adequacy
+9/10/25
+
+Buidling tests from specifications (TDD)
+- The real spec is often implicit
+- When delivering a feature, it is important that the feature keeps working the same way
+	especially in the future.
+- If you liked it you should have put a test on it. The tests are often the specification.
+
+Example: Zip Code Lookup
+- Place name corresponds to a zip code, 02120 could be called Roxbury Crossing OR Boston OR
+	Mission Hill etc. 
+- Thus we must test to see that our tool will capture all potential outputs from one given 
+	input.
+- We need to test non 5-digit inputs, not a valid zip, one to one, one to many etc.
+
+export default function serach(list:number[], target:number) {
+	// TEST WHAT GOES HERE
+	}
+
+search([], 1) // empty list
+search([3], 4) // the thing you want is not in the list
+
+Brittle tests are tetsts that will fail unexpectedly if that undefined behavior changes. 
+
+WHAT DOES IT MEAN FOR A TEST TO SUCCEED? 
+Test oracles: Define the criteriea for a test to succeed.
+- Function returns exact right answer
+- Fn returns an acceptable answer
+- Returns same answer as last time
+- Function crashes (as expected)
+- Function has the right effects on its env.
+
+Mocks and Spies for astractons for testing ?? More details in Unit testing
+
+3.2 measures of test coverage
+WHEN HAVE I WRITTEN ENOUGH TESTS?
+- CODE COVERAGE
+
+MEASURES OF CODE COVERAGE
+Statement Coverage:
+Each line or part of code should be executated at least once in the test suite.
+
+# executed statements / # statements
+(line coverage)
+
+BRANCH COVERAGE
+Each branch in the control-flow graph must be executed at least once:
+# executed branches / # branches
+
+Most widely used criterion in industry.
+
+TOOLS
+jest --coverage (nice report)
+
+EXECUTING EVERY BRANCH DOESN'T MEAN THAT YOU'VE EXECUTED EVERY BEHAVIOR
+all branches can be covered, (true and false), but that doesn't mean that every behavior
+	is tested. 
+
+HOW CAN WE MAKE TESTING PATHS FEASIBLE? 
+exclusion, set intersection. 
+
+3.3 ADVERSARIAL TESTING
+A way of judging whether or not you have written enough tests. 
+Obj is to write tests that protect your code from idiots.
+Your task is to make your tests strong enough s.t. they test those dumb/careless errors.
+You win if your tests reject all mutant implementations. 
+
+Ex: >= --> > 
+[Survived] ConditionalExpression
+src/for-midterm/adrian.ts:4:32
+- return list.find((item) => item >= target);
++ return list.find((item) => true);
+Tests ran:
+search should return the first item in the list that is greater
+than or equal to the target
+
+Here's one test that will cause the mutant to be killed.
+test("should return the second element of the list", () => {
+expect(search([5, 7, 9], 6)).toBe(7);
+});
+
+MODULE 4 --
+70% of developers say they spend the most time trying to understand code, rather than
+	writing code. 
+
+Good Readability and what not:
+
+1. Use good names
+2. Make your data mean something - practical data
+3. One method, one job
+4. Don't repeat yourself
+5. 
