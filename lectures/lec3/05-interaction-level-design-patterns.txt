@@ -1,0 +1,265 @@
+MODULE 6 - Concurrency Patterns in Typescipt
+LEARNING GOALS:
+Learning Goals for this Lesson
+• At the end of this lesson, you should be
+prepared to:
+• Explain the difference between JS run-to-
+completion semantics and interrupt-based
+semantics.
+• Given a simple program using async/await,
+work out the order in which the statements
+in the program will run.
+• Write simple programs that create and
+manage promises using async/await
+• Write simple programs to mask latency with
+concurrency by using non-blocking IO and
+Promise.all in TypeScript.
+
+How do we not waste time by doing something else? 
+
+1. Co-operative multiprocessing
+2. Non-blocking IO
+
+Most OS's use pre-emptive multiprocessing
+• OS manages multiprocessing with multiple threads of
+execution
+• Processes may be interrupted at unpredictable times
+• Inter-process communication by shared memory
+• Data races abound
+• Really, really hard to get right: need critical sections,
+semaphores, monitors (all that stuff you learned about in
+op. sys.)
+
+JS/TS uses cooperative multiprocessing.
+
+ASYNC /AWAIT
+An async fn is like an ordinatry fn except that it will pause at 2 well defined points
+in it's execution. 
+- When one program pauses, the runtime can choose to resume executing any process that
+is ready to run.
+
+async function X will only pause at an await statement where some other fn runs.
+
+USE PROMISE.ALL TO EXECUTE SEVERAL REQUESTS AT ONCE:
+async function main() {
+console.log('starting main');
+const promises = [fakeRequest(1),
+fakeRequest(2),
+fakeRequest(3)];
+const results = await Promise.all(promises);
+console.log('results:', results);
+console.log('main done');
+} 1018.MSEC
+
+IF YOU ADD AWAITS, THE REQUESTS WILL BE PROCESSED SEQUENTIALLY:
+async function main() {
+console.log('starting main');
+const res1 = await fakeRequest(1);
+console.log(`fakeRequest(1) returned: ${res1}`);
+const res2 = await fakeRequest(2);
+console.log(`fakeRequest(2) returned: ${res2}`);
+const res3 = await fakeRequest(2);
+console.log(`fakeRequest(2) returned: ${res3}`);
+console.log('main done');
+} 3024.MSEC
+
+CONCURRENCY IS FASTER!!!
+(OBVIOUSLY)
+
+...
+
+VISUALIZING PROMISE.ALL
+- Sequentially is Send wait Receive - Send wait Recieve - etc.
+	- Don't make another req until you get the prev one back
+- Concurrent is Send (while waiting send), wait, say 100ms recieve the first one execute, recieve the second, execute etc. 
+	- Make all requests now then wait
+
+- Requests can be chained if serial.
+
+RECOVER FROM ERRORS WITH TRY/CATCH
+Reqs will fail. 
+
+aync function maybeFialingRequest(req: number): Promise<number> {
+	const ret = await fakeReq(req);
+	if (res < 0) {
+		throw new error(Req ...);
+		} else {
+		return res;
+		}
+	}
+
+We wrap this in try catch if succeed we're good if not we catch the error and print.
+Recover by having main return 0. 
+
+try/catch, continued
+21
+async function main() {
+console.log('main started');
+const req1 = -32
+let res: number;
+try {
+res = await maybeFailingRequest(req1);
+console.log(`fakeRequest(${req1}) returned: ${res}`);
+} catch (err) {
+console.error(`Error occurred for request ${req1}`);
+res = 0
+}
+console.log('main done with res =', res);
+}
+timeIt(main);
+
+PATTERN FOR TESTING AN ASYNC FN:
+
+General Rules for Writing Asynchronous
+Code
+• You can’t return a value from a promise to an ordinary
+procedure.
+• You can only send the value to another promise that is
+awaiting it.
+• Call async procedures only from other async functions or from
+the top level.
+• Break up any long-running computation into async/await
+segments so other processes will have a chance to run.
+• Leverage concurrency when possible
+• Use promise.all if you need to wait for multiple promises to
+return.
+• Check for errors with try/catch
+
+Promises Enforce Ordering Through “Then”
+• axios.get returns a promise.
+• p.then mutates that promise so that the then block is not run until after the original promise returns.
+• The resulting promise isn’t completed until the then block finishes.
+• You can chain .then’s, to get things that look like p.then().then().then()
+• Each then is a pause point.
+
+1. console.log('Making requests');
+2. axios.get('https://rest-example.covey.town/')
+.then((response) =>{
+console.log('Heard back from server');
+console.log(response.data);
+});
+3. axios.get('https://www.google.com/')
+.then((response) =>{
+console.log('Heard back from Google');
+});
+4. axios.get('https://www.facebook.com/')
+.then((response) =>{
+console.log('Heard back from Facebook');
+});
+5. console.log('Requests sent!');
+
+ASYNC/AWAIT CODE IS COMPLIED INTO PROMISE/THEN CODE
+
+MODULE 5 - INTERACTION-LEVEL DESIGN PATTERNS
+Learning goals for this lesson:
+Explain how patterns capture common solutions. 
+Explain and give an example of :
+- Demand-push patter
+- Data push (listener or observer pattern)
+- Callback or handler pattern
+- Typed Emitter Pattern
+
+Patterns help communicate intent
+- If code uses a well known pattern, reader will have a headstart in understanding.
+
+-- CLOCK EXAMPLE --
+export default interface ISimpleClock {
+/** sets the time to 0 */
+reset():void
+/** increments the time */
+tick():void
+/** returns the current time */
+getTime():number
+}
+
+write some tests
+
+The code is simple…
+10
+import IClock from "./simpleClock.interface";
+export class SimpleClock implements IClock {
+private time = 0
+public reset () : void {this.time = 0}
+public tick () : void { this.time++ }
+public getTime(): number { return this.time }
+}
+export class ClockClient {
+constructor (private theclock:IClock) {}
+getTimeFromClock ():number {return this.theclock.getTime()}
+}
+src/clockWithPull/simpleClock.ts
+We call this the "demand-pull" pattern
+• because the when the client needs some data, it
+pulls the data it needs from the server.
+• Alternative names: you could call these the
+consumer and the producer.
+
+-- DATA PUSH PATTERN --
+- We want the server to push data to the consumer only when it changes. 
+- The consumer needs to advertise an update method that the producer can call.
+
+-- THIS IS CALLED THE LISTENER OR OBSERVER PATTERN -- 
+- Object being observed (the subject) keeps a list of the objs who need to be notified when something changes.
+- When a new obj (the consumer) wants to be notified when the subject changes, it registers with (subs to) the subject/producer/publisher.
+
+-- INTERFACE USING PUSH PATTERN -- 
+- add a notify param. 
+
+-- CALLBACK OR HANDLER PATTERN --
+* USED ALL THE TIME IN REACT
+
+- The server contructs the client and gives it a fn to call instead.
+- Typically this fn is inside the server. 
+- We call this a callback or handler. 
+
+Interface:
+export interface ICallBackServer {
+// returns a new client that satisfies the ICallBackClient interface
+newClient(clientName: string): ICallBackClient;
+// returns the log of all push messages received
+log(): string[];
+}
+export interface ICallBackClient {
+// sends a push message to the server,
+sendPush: () => void
+// asks the server for list of all push messages received
+// from all clients.
+getLog: () => string[];
+}
+
+Server:
+export class Server implements ICallBackServer {
+// the log of all push messages received
+private _log: string[] = []
+// using arrow function to bind 'this' correctly
+private pushHandler = (clientName: string) => () => {this._log.push(clientName)}
+private logHandler = () : string[] => { return this._log }
+public log(): string[] { return this._log }
+public newClient(clientName:string): ICallBackClient {
+return new Client(this.pushHandler(clientName), this.logHandler)
+}
+}
+
+Client:
+export class Client implements ICallBackClient {
+// the client doesn't get to see the server directly; the server
+// creates it with two callbacks.
+constructor(
+_pushHandler: () => void,
+_logHandler: () => string[],
+) { this.pushHandler = _pushHandler; this.logHandler = _logHandler; }
+private pushHandler: () => void
+private logHandler: () => string[]
+// the public methods just call the callbacks
+public sendPush() { this.pushHandler(); }
+public getLog(): string[] { return this.logHandler(); }
+}
+
+-- #4 TYPED-EMITTER PATTERN --
+- What if the data source wants to notify its listeners with several different kinds of messages?
+- Maybe with different data payloads?
+- And what if we want to take advantage of type-checking?
+
+im just not capable of paying attention icl. 
+
+
