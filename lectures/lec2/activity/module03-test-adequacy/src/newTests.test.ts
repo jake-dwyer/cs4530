@@ -22,10 +22,8 @@ describe("getGrade error handling", () => {
     const studentName = "Alice";
     const studentID = db.addStudent(studentName);
 
-    // Add Alice to a different course
     db.addGrade(studentID, studentName, "math101", 90);
 
-    // Try to fetch grade for a non-existent course
     expect(() =>
       db.getGrade(studentID, studentName, "cs102")
     ).toThrow(
@@ -48,10 +46,8 @@ describe('Student with no courses found for GPA calculation', () => {
     const courseID = '999';
     const grade = 100;
 
-    // Frank in class 999 with a 100
     db.addGrade(studentID2, studentInClass, courseID, grade);
 
-    // Jake not in class 999, trying to calculate GPA.
     expect(() =>
       db.getGPA(studentID1, studentNotInClass)
     ).toThrow("No courses found for GPA calculation");
@@ -134,7 +130,7 @@ describe('Grade retrieval', () => {
         const studentID = db.addStudent(studentName);
         const courseID1 = '999';
         const grade1 = 100;
-        const courseID2 = '888';
+        const courseID2 = '111';
         const grade2 = 85;
         db.addGrade(studentID, studentName, courseID1, grade1);
         db.addGrade(studentID, studentName, courseID2, grade2);
@@ -156,7 +152,7 @@ describe('Enrollment checking', () => {
       const courseID = '999';
       const grade = 100;
       db.addGrade(studentID, studentName, courseID, grade);
-      const notEnrolledCourseID = '888';
+      const notEnrolledCourseID = '111';
       const isEnrolled = db.isEnrolled(studentID, studentName, notEnrolledCourseID);
       expect(isEnrolled).toBe(false);
     });
