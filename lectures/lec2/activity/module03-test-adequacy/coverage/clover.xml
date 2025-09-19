@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1757552367457" clover="3.2.0">
-  <project timestamp="1757552367457" name="All files">
+<coverage generated="1758250737487" clover="3.2.0">
+  <project timestamp="1758250737487" name="All files">
     <metrics statements="38" coveredstatements="38" conditionals="8" coveredconditionals="8" methods="20" coveredmethods="20" elements="66" coveredelements="66" complexity="0" loc="38" ncloc="38" packages="1" files="1" classes="1"/>
-    <file name="transcriptService.ts" path="/home/jake/Desktop/school/cs4530/lectures/lec3/activity/module03-test-adequacy/src/transcriptService.ts">
+    <file name="transcriptService.ts" path="/home/jake/Desktop/school/cs4530/lectures/lec2/activity/module03-test-adequacy/src/transcriptService.ts">
       <metrics statements="38" coveredstatements="38" conditionals="8" coveredconditionals="8" methods="20" coveredmethods="20"/>
       <line num="5" count="2" type="stmt"/>
-      <line num="9" count="2" type="stmt"/>
-      <line num="16" count="2" type="stmt"/>
-      <line num="17" count="12" type="stmt"/>
-      <line num="25" count="11" type="stmt"/>
-      <line num="33" count="12" type="stmt"/>
-      <line num="34" count="12" type="stmt"/>
-      <line num="39" count="12" type="stmt"/>
-      <line num="40" count="12" type="stmt"/>
+      <line num="9" count="3" type="stmt"/>
+      <line num="16" count="3" type="stmt"/>
+      <line num="17" count="20" type="stmt"/>
+      <line num="25" count="20" type="stmt"/>
+      <line num="33" count="20" type="stmt"/>
+      <line num="34" count="20" type="stmt"/>
+      <line num="39" count="20" type="stmt"/>
+      <line num="40" count="20" type="stmt"/>
       <line num="49" count="2" type="stmt"/>
       <line num="50" count="6" type="stmt"/>
       <line num="51" count="3" type="stmt"/>
-      <line num="59" count="15" type="cond" truecount="2" falsecount="0"/>
-      <line num="60" count="15" type="cond" truecount="2" falsecount="0"/>
-      <line num="61" count="3" type="stmt"/>
-      <line num="63" count="12" type="stmt"/>
-      <line num="68" count="4" type="stmt"/>
-      <line num="70" count="3" type="stmt"/>
+      <line num="59" count="31" type="cond" truecount="2" falsecount="0"/>
+      <line num="60" count="31" type="cond" truecount="2" falsecount="0"/>
+      <line num="61" count="5" type="stmt"/>
+      <line num="63" count="26" type="stmt"/>
+      <line num="68" count="8" type="stmt"/>
+      <line num="70" count="7" type="stmt"/>
       <line num="81" count="2" type="stmt"/>
       <line num="83" count="1" type="stmt"/>
-      <line num="87" count="2" type="stmt"/>
-      <line num="88" count="2" type="stmt"/>
-      <line num="89" count="2" type="stmt"/>
-      <line num="90" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="87" count="5" type="stmt"/>
+      <line num="88" count="5" type="stmt"/>
+      <line num="89" count="6" type="stmt"/>
+      <line num="90" count="5" type="cond" truecount="2" falsecount="0"/>
       <line num="91" count="1" type="stmt"/>
-      <line num="93" count="1" type="stmt"/>
-      <line num="97" count="7" type="stmt"/>
-      <line num="100" count="6" type="stmt"/>
+      <line num="93" count="4" type="stmt"/>
+      <line num="97" count="14" type="stmt"/>
+      <line num="100" count="13" type="stmt"/>
       <line num="104" count="1" type="stmt"/>
       <line num="108" count="2" type="stmt"/>
       <line num="109" count="2" type="cond" truecount="2" falsecount="0"/>
@@ -40,8 +40,8 @@
       <line num="113" count="2" type="stmt"/>
       <line num="114" count="1" type="stmt"/>
       <line num="115" count="1" type="stmt"/>
-      <line num="119" count="1" type="stmt"/>
-      <line num="120" count="1" type="stmt"/>
+      <line num="119" count="5" type="stmt"/>
+      <line num="120" count="6" type="stmt"/>
     </file>
   </project>
 </coverage>
