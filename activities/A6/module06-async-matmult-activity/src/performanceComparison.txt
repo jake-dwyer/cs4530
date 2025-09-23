@@ -1,0 +1,30 @@
+Performance Comparions of the 3 Matrix Multiplication Implementations:
+
+-- Test Setup -- 
+Matrix Size: 10x10
+Integers Used: -5 -> 5
+
+-- Results --
+
+1. matrixMultiply | Sequential
+  - Runtime: 0.16 ms
+  - Fastest by far since all multiplication is done locally with no external networks used.
+
+2. matrixMultiplyAsync1 | Async
+  - Runtime: 30,956.00 ms
+  - Slowest implementation of the bunch.
+  - Each multiplication waits for the remote service before moving onto the next step. The total time adds up linearly alongside the number of operations.
+
+3. matrixMultiplyAsync2 | Async
+  - runtime: 4,682.27 ms
+  - Among Async1 and Async2, this one is faster because it uses concurrency when calling remote services. 
+
+-- Raw Console Output --
+Matrix size: 10x10
+matrixMultiply (sequential): 0.16 ms
+matrixMultiplyAsync1 (async): 30956.00 ms
+matrixMultiplyAsync2 (async, concurrent): 4682.27 ms
+
+-- Note --
+I couldn't get my performanceTest to run unless I changed the imports in each individual file to have a .js extension. Since the assignment doesn't say
+that performanceTest.ts will be graded itself, I changed back all the files so that if `npm test` is ran, the tests will pass without any issues.
