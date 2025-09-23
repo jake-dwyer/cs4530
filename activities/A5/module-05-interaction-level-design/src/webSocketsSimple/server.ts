@@ -3,11 +3,10 @@ import { Server, Socket } from "socket.io";
 import { ClientToServerEvents, ServerToClientEvents } from './shared';
 
 const corsParams = {
-    origin: "http://localhost:8080",  // Updated to match client port
+    origin: "http://localhost:8080",
     methods: ["GET", "POST"]
 }
 
-// to keep track of connected clients
 const clients: Record<string, string> = {};
 
 export default function createServer() {

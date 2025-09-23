@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import { ClientToServerEvents, ServerToClientEvents } from './shared';
 
-const clientURL = "http://localhost:8080"; // Ensure this matches the server URL
+const clientURL = "http://localhost:8080";
 
 export default class Client {
     private socket: Socket<ServerToClientEvents, ClientToServerEvents> 
